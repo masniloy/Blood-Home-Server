@@ -13,7 +13,6 @@ app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@blooddonor.e9745cf.mongodb.net/?retryWrites=true&w=majority`;
 
-console.log(uri)
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
     serverApi: {
@@ -31,6 +30,7 @@ async function run() {
             const cursor = DonorCollection.find(quary);
             const DonorDetail = await cursor.toArray();
             res.send(DonorDetail);
+
         })
 
 
@@ -47,7 +47,7 @@ run().catch(err => connsole.error(err));
 
 
 app.get('/', (req, res) => {
-    res.send("Simple Node Server Running");
+    res.send("Ok Simple Node Server Running");
 });
 
 app.listen(port, () => {
