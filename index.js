@@ -31,6 +31,14 @@ async function run() {
             const DonorDetail = await cursor.toArray();
             res.send(DonorDetail);
 
+        });
+
+
+
+        app.post('/DonorDetail', async (req, res) => {
+            const donor = req.body;
+            const result = await DonorCollection.insertOne(donor);
+            res.send(result);
         })
 
 
