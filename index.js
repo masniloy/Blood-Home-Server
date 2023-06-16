@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 
 const app = express();
@@ -25,7 +25,11 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         const DonorCollection = client.db('BloodDonor').collection('DonorDetail');
-        app.get('/DonorDetail', async (req, res) => {
+        const BloodRequestCollection = client.db('BloodDonor').collection('BloodRequest');
+
+
+        //for all donore details
+        app.get('/DonorDetail', async (req, res) => {                           //get the value from server
             const quary = {}
             const cursor = DonorCollection.find(quary);
             const DonorDetail = await cursor.toArray();
@@ -33,15 +37,36 @@ async function run() {
 
         });
 
-
-
-        app.post('/DonorDetail', async (req, res) => {
+        app.post('/DonorDetail', async (req, res) => {                          //post the value on server
             const donor = req.body;
             const result = await DonorCollection.insertOne(donor);
             res.send(result);
-        })
+        });
+
+        // app.get('/DonorDetail/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const query = { _id: ObjectId(id) };
+        //     const simgleDonorDetail = await DonorCollection.findOne(query);
+        //     res.send(simgleDonorDetail);
+        // });
 
 
+
+
+        //for blood request
+        app.get('/BloodRequest', async (req, res) => {                  //get the value from server
+            const quary = {}
+            const cursor = BloodRequestCollection.find(quary);
+            const BloodRequest = await cursor.toArray();
+            res.send(BloodRequest);
+
+        });
+
+        app.post('/BloodRequest', async (req, res) => {                  //post the value on server
+            const donor = req.body;
+            const result = await BloodRequestCollection.insertOne(donor);
+            res.send(result);
+        });
 
 
     } finally {
